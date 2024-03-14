@@ -24,7 +24,7 @@ When you download the repo you will have these 2 folders available.
 
 If you have git installed you can run the command below from the command line. This will create a folder fhir-connectathon-march-2024 in the same directory you ran the command from.
 
-git clone https://github.com/tewhatuora/fhir-connectathon-march-2024.git
+    git clone https://github.com/tewhatuora/fhir-connectathon-march-2024.git
 
 #### Non Git Option:
 
