@@ -8,12 +8,13 @@ It is assumed that you have a level of developer experience, e.g. you know how t
 
 ### Installation Instructions
 
-There are 2 folders in the repo.
+There are 3 folders in the repo. Depending on what you want to achieve during the connectathon, only some resources will be relevant to you.
 
-1. [NEMSGuaranteedSubscriber-dotNET](https://github.com/tewhatuora/fhir-connectathon-march-2024/tree/main/NEMSGuaranteedSubscriber-dotNET) (for the .NET code)
-2. [NEMSGuaranteedSubscriber](https://github.com/tewhatuora/fhir-connectathon-march-2024/tree/main/NEMSGuaranteedSubscriber) (for the Java Code)
+1. [AsyncAPI](https://github.com/tewhatuora/fhir-connectathon-march-2024/tree/main/AsyncAPI)
+2. [NEMSGuaranteedSubscriber-dotNET](https://github.com/tewhatuora/fhir-connectathon-march-2024/tree/main/NEMSGuaranteedSubscriber-dotNET) (for the .NET code)
+3. [NEMSGuaranteedSubscriber](https://github.com/tewhatuora/fhir-connectathon-march-2024/tree/main/NEMSGuaranteedSubscriber) (for the Java Code)
 
-When you download the repo you will have these 2 folders available.
+When you download the repo you will have all 3 folders available.
 
 #### Requirements:
 
