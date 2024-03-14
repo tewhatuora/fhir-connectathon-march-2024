@@ -13,7 +13,7 @@
 
 * Event topic examples: Patient admission to hospital, changes to a providers practicing certificate status or a change of address for a healthcare consumer.
 
-![NEMS](https://confluence.hl7.org/download/attachments/220707922/image-2024-3-14_14-41-0.png?version=1&modificationDate=1710380474770&api=v2)
+![NEMS](./images/Markdown/NEMS.png)
 
 [Learn more about NEMS](https://confluence.hl7.org/download/attachments/220707922/National%20Event%20Management%20Service%20101%20Feb%202024.pdf?version=1&modificationDate=1710380493848&api=v2)
 
