@@ -28,6 +28,26 @@ We are developing a plan with pre-work to ensure we can work on each of these st
 By integrating FHIR questionnaires with the National Event Management Service, healthcare providers could enhance data collection efficiency, improve care coordination, and enable more proactive and personalised patient care. For example, completing a questionnaire about symptoms could trigger an alert to a healthcare provider if certain responses indicate a high risk or require immediate attention.
 ![NEMS & FHIR Questionnaires Components](./images/Markdown/components.png)
 
+The following diagram illustrates the flow of creating a FHIR Subscription and receiving a FHIR message:
+
+```mermaid
+sequenceDiagram
+FHIR Subscriber->>NEMS: create Subscription
+activate NEMS
+NEMS->>FHIR Server: create Subscription
+activate FHIR Server
+FHIR Server-->>NEMS: success
+deactivate FHIR Server
+NEMS-->>FHIR Subscriber: success
+deactivate NEMS
+loop Resource Event
+FHIR Server -) NEMS: 
+note over FHIR Server,NEMS: FHIR message
+NEMS-)FHIR Subscriber: 
+note over FHIR Subscriber,NEMS: FHIR message
+end
+```
+
 ### Get Started
 
 This is the repo for the NEMS / Questionnaire stream for the Ring Of FHIR Connectathon. There are 2 simple subscriber applications written in Java and .NET. Depending on your comfort level you can choose the language of your choice. However the Java client application has more helper files to manage FHIR requests.
