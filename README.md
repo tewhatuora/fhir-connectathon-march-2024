@@ -15,8 +15,7 @@
 
 ![NEMS](./images/Markdown/NEMS.png)
 
-[Learn more about NEMS](https://confluence.hl7.org/download/attachments/220707922/National%20Event%20Management%20Service%20101%20Feb%202024.pdf?version=1&modificationDate=1710380493848&api=v2)
-
+[Learn more about NEMS](./documents/nems.html)
 
 [Learn more about this track](https://confluence.hl7.org/pages/viewpage.action?pageId=220707922)
 
