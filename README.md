@@ -28,7 +28,7 @@ We are developing a plan with pre-work to ensure we can work on each of these st
 By integrating FHIR questionnaires with the National Event Management Service, healthcare providers could enhance data collection efficiency, improve care coordination, and enable more proactive and personalised patient care. For example, completing a questionnaire about symptoms could trigger an alert to a healthcare provider if certain responses indicate a high risk or require immediate attention.
 ![NEMS & FHIR Questionnaires Components](./images/Markdown/components.png)
 
-The following diagram illustrates the flow of creating a FHIR Subscription and receiving a FHIR message:
+The following diagram illustrates the flow of creating a FHIR Subscription and receiving a FHIR message with NEMS and underlying FHIR server:
 
 ```mermaid
 sequenceDiagram
