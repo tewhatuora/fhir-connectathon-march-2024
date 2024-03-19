@@ -1,9 +1,21 @@
 ﻿{
-  "QueueConsumer": {
-    "Host": "",
-    "VPNName": "",
-    "Username": "",
-    "Password": "",
-    "QueueName": ""
+  "NEMSProperties": {
+    "Host": "tcps://ring-of-fhir.messaging.solace.cloud:55443",
+    "VPNName": "ring-of-fhir",
+    "QueueName": "YOUR-USERNAME",
+    "ReconnectRetries" : 3,
+    "ConnectionType" : "BASIC"
+  },
+  "OAuthCredentials": {
+    "TokenServer" : "",
+    "ClientId" : "",
+    "ClientSecret" : "",
+    "Scope" : "",
+    "Issuer" : ""
+  },
+  "BasicCredentials" : {
+    "Username" : "YOUR-USERNAME",
+    "Password" : "welcome1"
   }
+
 }
