@@ -10,7 +10,7 @@ import nz.govt.tewhatuora.Models.DeathModel;
 import nz.govt.tewhatuora.Service.GlobalProperties;
 import nz.govt.tewhatuora.Utilities.EventUtil;
 import nz.govt.tewhatuora.Utilities.NhiUtil;
-import nz.govt.tewhatuora.Database.DeathDatabase; // Delete 
+import nz.govt.tewhatuora.Database.DeathDatabase;
 import nz.govt.tewhatuora.Utilities.RestUtil;
 import ca.uhn.fhir.rest.client.api.IGenericClient;
 

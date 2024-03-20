@@ -44,10 +44,21 @@ This code can be used to build new events and leverage the logic. Guidelines has
 
 The code provided has been designed to enable quick development for developers that has limited codeing experience. For repeatable tasks like connectivity, this has been provided for you. If you have limited FHIR helper code has been provided. Going forward these helper files will be extended as new events are added to the NEMS broker.
 
+### Getting Started
+
 To start there is a package `EventLoader.java` this is the package where you add your custom code. This package gets invoked once the application has successfully connected to the queue and waiting for messages.
 
 The application expects the topic subscription to be in the following format
 
     [domain] / [resource] / [event]
 
-It looks for the event name and perfoms a check. This allows the client application to support multiple event types.
+It looks for the event name and perfoms a check. This allows the client application to support multiple event types. It is recommeded to create a new package that accepts `com.solace.messaging.receiver.InboundMessage`.
+
+### Utilities
+
+The Utilities folder contains a number of helper packages. These will be extended as new events as the NEMS platform evolves. If you modify these, you need to ensure that your repo synchronisation protects you from overwriting your code.
+
+- DatabaseUtil: Provides connect string to a sample Oracle stored procedure. The definition is stored in the `DeathDatabase.java` package.
+- EventUtil: Provides connection and helper functions to manage events easily
+- NhiUtil: Gets data from the NHI FHIR API in a digestable format. Currently on Death data is supported
+- RestUtil: REST helper package that helps call REST APIs and parse them

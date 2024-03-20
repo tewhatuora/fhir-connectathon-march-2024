@@ -7,21 +7,14 @@ import org.hibernate.cfg.Configuration;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 import nz.govt.tewhatuora.Database.DeathDatabase;
 import nz.govt.tewhatuora.Service.GlobalProperties;
 
 public class DatabaseUtil {
 
-    // final static Properties databaseProperties =
-    // DatabaseUtil.SetDatabaseProperties();
-    private static Properties properties = new Properties();
-
     public static void CallStoredProcedure(DeathDatabase dp) {
-        // Create a Hibernate SessionFactory
 
-        SetDatabaseProperties();
         Configuration configuration = new Configuration().configure();
         SessionFactory sessionFactory = configuration.configure().buildSessionFactory();
 
@@ -42,18 +35,6 @@ public class DatabaseUtil {
             sessionFactory.close();
         }
 
-    }
-
-    public static void SetDatabaseProperties() {
-
-        properties.setProperty("hibernate.connection.url", GlobalProperties.getProperty("hibernate.connection.url"));
-        properties.setProperty("hibernate.connection.username",
-                GlobalProperties.getProperty("hibernate.connection.username"));
-        properties.setProperty("hibernate.connection.password",
-                GlobalProperties.getProperty("hibernate.connection.password"));
-        properties.setProperty("hibernate.dialect", GlobalProperties.getProperty("hibernate.dialect"));
-
-        // return properties;
     }
 
     public static Connection GetConnection(String env) throws SQLException {
