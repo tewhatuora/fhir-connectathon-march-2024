@@ -65,7 +65,7 @@ The Utilities folder contains a number of helper packages. These will be extende
 
 ### Curl to POST
 
-`curl --location 'https://ring-of-fhir.messaging.solace.cloud:9443/fhir/QuestionnaireResponse/smoking' \
+`curl --location 'https://ring-of-fhir.messaging.solace.cloud:9443/fhir/QuestionnaireResponse/SmokingCessation' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic cXVlc3Rpb25uYWlyZTpmamc2RU1SLnRtay5ybWE1ZnJm' \
 --header 'Cookie: TSID=609e013db6d8eb00' \
