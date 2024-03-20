@@ -62,3 +62,13 @@ The Utilities folder contains a number of helper packages. These will be extende
 - EventUtil: Provides connection and helper functions to manage events easily
 - NhiUtil: Gets data from the NHI FHIR API in a digestable format. Currently on Death data is supported
 - RestUtil: REST helper package that helps call REST APIs and parse them
+
+### Curl to POST
+
+`curl --location 'https://ring-of-fhir.messaging.solace.cloud:9443/fhir/QuestionnaireResponse/smoking' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic cXVlc3Rpb25uYWlyZTpmamc2RU1SLnRtay5ybWE1ZnJm' \
+--header 'Cookie: TSID=609e013db6d8eb00' \
+--data '{
+    "test": "manual"
+}'`
