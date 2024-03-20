@@ -1,0 +1,11 @@
+*.DS_Store
+.vscode
+*logback.xml
+/NEMSGuaranteedSubscriber/.idea
+/NEMSGuaranteedSubscriber/target
+/NEMSGuaranteedSubscriber/.vscode
+### Creds
+NEMSGuaranteedSubscriber/src/main/resources/application.properties
+NEMSGuaranteedSubscriber-dotNET/source/properties.json
+NEMSGuaranteedSubscriber-dotNET/source/bin
+NEMSGuaranteedSubscriber-dotNET/source/obj
