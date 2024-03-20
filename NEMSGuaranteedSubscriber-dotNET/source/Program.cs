@@ -6,17 +6,6 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("properties.json")
     .Build();
 
-var queueSection = configuration.GetSection("QueueConsumer");
-
-var settings = new QueueConsumerSettings
-{
-    Host = queueSection["Host"] ?? string.Empty,
-    VPNName = queueSection["VPNName"] ?? string.Empty,
-    Username = queueSection["Username"] ?? string.Empty,
-    Password = queueSection["Password"] ?? string.Empty,
-    QueueName = queueSection["QueueName"] ?? string.Empty,
-};
-
 #if (!DEBUG)
 try 
 {
@@ -30,7 +19,8 @@ using var consumer = new QueueConsumer(loggerFactory.CreateLogger<QueueConsumer>
 
 using var config = new NEMSConfig(loggerFactory.CreateLogger<NEMSConfig>());
 using var context = config.CreateContext();
-consumer.Run(settings, context);
+
+consumer.Run(configuration, context);
 
 #if (!DEBUG)
 }

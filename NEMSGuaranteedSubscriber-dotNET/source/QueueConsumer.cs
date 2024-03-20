@@ -1,18 +1,20 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using SolaceSystems.Solclient.Messaging;
 using System.Text;
 
 namespace GuaranteedSubscriber;
 
-public class QueueConsumer
-    : IDisposable
+public class QueueConsumer : IDisposable
 {
     private readonly ILogger _logger;
     private readonly EventWaitHandle _eventWaitHandle;
 
+
     private ISession? _session;
     private IQueue? _queue;
     private IFlow? _flow;
+    private IConfiguration? _config;
 
     public QueueConsumer(ILogger<QueueConsumer> logger)
     {
@@ -20,41 +22,43 @@ public class QueueConsumer
         _eventWaitHandle = new AutoResetEvent(false);
     }
 
-    public void Run(QueueConsumerSettings settings, IContext context)
+    public void Run(IConfiguration configuration, IContext context)
     {
         // Validate inputs
-        ArgumentNullException.ThrowIfNull(settings, nameof(settings));
+        ArgumentNullException.ThrowIfNull(configuration, nameof(configuration));
         ArgumentNullException.ThrowIfNull(context, nameof(context));
+        _config = configuration;
+        var queueName = _config["NEMSProperties:QueueName"] ?? string.Empty;
+        var connType = _config["NEMSProperties:ConnectionType"] ?? string.Empty;
 
-        var sessionProperties = settings.ToSessionProperties();
-        
-        InternalRun(sessionProperties, settings.QueueName, context);
-    }
+        if (connType.Equals("BASIC"))
+        {
+            var sessionProperties = new NEMSConnection().BasicConnection(_config);
+            InternalRun(sessionProperties, queueName, context);
+        }
+        else
+        {
+            var sessionProperties = new NEMSConnection().OAuthConnection(_config);
+            InternalRun(sessionProperties, queueName, context);
+        }
 
-    public void Run(SessionProperties properties, string queueName, IContext context)
-    {
-        // Validate inputs
-        ArgumentNullException.ThrowIfNull(properties, nameof(properties));
-        ArgumentNullException.ThrowIfNull(context, nameof(context));
-
-        InternalRun(properties, queueName, context);
     }
 
     private void InternalRun(SessionProperties sessionProperties, string queueName, IContext context)
     {
-        // Connect to Solace.
-        _logger.LogInformation("Connecting as {username}@{vpnName} on {host}...", sessionProperties.UserName, sessionProperties.VPNName, sessionProperties.Host);
+        // Connect to NEMS.
+        _logger.LogInformation("Connecting as {vpnName} on {host}...", sessionProperties.VPNName, sessionProperties.Host);
 
-        _session = context.CreateSession(sessionProperties, null, null);
+        _session = context.CreateSession(sessionProperties, null, HandleSessionEvent);
 
         var result = _session.Connect();
         if (result is not ReturnCode.SOLCLIENT_OK)
         {
-            _logger.LogError("Failed to connect to Solace. Reason: {result}", result);
+            _logger.LogError("Failed to connect to NEMS. Reason: {result}", result);
             return;
         }
 
-        _logger.LogInformation("Successfully connected to Solace!");
+        _logger.LogInformation("Successfully connected to NEMS!");
 
         // Attempt to connect to the specified queue.
         _logger.LogInformation("Attempting to connect to queue '{queueName}'", queueName);
@@ -78,7 +82,6 @@ public class QueueConsumer
         while (true)
         {
             _logger.LogInformation("Waiting for message in queue '{queueName}'...", queueName);
-
             _eventWaitHandle.WaitOne();
         }
     }
@@ -90,6 +93,7 @@ public class QueueConsumer
         using var message = args.Message;
 
         _logger.LogInformation("Message content: {content}", Encoding.ASCII.GetString(message.BinaryAttachment));
+        _logger.LogInformation("Test: {details}", message.ADMessageId);
         _flow?.Ack(message.ADMessageId);
         _eventWaitHandle.Set();
     }
@@ -99,10 +103,33 @@ public class QueueConsumer
         _logger.LogInformation("Recieved Flow Event '{event}' Type: '{responseCode}' Text: '{info}'", args.Event, args.ResponseCode, args.Info);
     }
 
+    private void HandleSessionEvent(object? source, SessionEventArgs args)
+    {
+
+        if (args.Event.Equals(SessionEvent.Reconnecting))
+        {
+
+            _logger.LogInformation("Reconnecting - Renewing Token");
+            NEMSConnection conn = new NEMSConnection();
+
+            if (_session != null && _config != null)
+            {
+                _session.ModifyProperty(SessionProperties.PROPERTY.OAuth2AccessToken, conn.RenewToken(_config));
+            }
+            else
+            {
+                _logger.LogInformation("Renewing Token FAILED - Session and / or configuration NULL");
+            }
+        }
+        _logger.LogInformation("Recieved Session Event '{event}' Type: '{responseCode}' Text: '{info}'", args.Event, args.ResponseCode, args.Info);
+    }
+
     public void Dispose()
     {
         _session?.Dispose();
         _queue?.Dispose();
         _flow?.Dispose();
     }
+
+
 }
