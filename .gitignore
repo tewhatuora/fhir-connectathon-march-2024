@@ -1,6 +1,5 @@
 *.DS_Store
 .vscode
-*logback.xml
 /NEMSGuaranteedSubscriber/.idea
 /NEMSGuaranteedSubscriber/target
 /NEMSGuaranteedSubscriber/.vscode
