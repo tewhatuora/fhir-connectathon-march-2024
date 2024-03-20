@@ -1,6 +1,12 @@
 # NEMS Guaranteed Subscriber Java
 
-A simple java application that can be used as a subscriber using the JCSMP Solace native API.
+This application can be used as a template to connect to NEMS. It supports the following use cases:
+
+- Connects to the Pilot event - Death notice
+- Connects to the FHIR NHI API to retrieve additional information not provided in the payload
+- Writes the payload to a simple database procedure
+
+This code can be used to build new events and leverage the logic. Guidelines has been provided below to describe how the program has been structured.
 
 ## Prerequisites
 
@@ -33,3 +39,14 @@ A simple java application that can be used as a subscriber using the JCSMP Solac
 
 - Ensure docker desktop is running
 - Run `docker-compose up --build `
+
+## Guidelines
+
+The code provided has been designed to enable quick development for developers that has limited codeing experience. For repeatable tasks like connectivity, this has been provided for you. If you have limited FHIR helper code has been provided. Going forward these helper files will be extended as new events are added to the NEMS broker.
+
+To start there is a package `EventLoader.java` this is the package where you add your custom code. This package gets invoked once the application has successfully connected to the queue and waiting for messages.
+
+The application expects the topic subscription to be in the following format
+[domain] / [resource] / [event]
+
+It looks for the event name and perfoms a check. This allows the client application to support multiple event types.
