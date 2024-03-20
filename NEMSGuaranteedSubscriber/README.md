@@ -10,9 +10,9 @@ This code can be used to build new events and leverage the logic. Guidelines has
 
 ## Prerequisites
 
-    Maven version 3.9.4
-    Java 17
-    Docker for desktop (Optional)
+- Maven version 3.9.4
+- Java 17
+- Docker for desktop (Optional)
 
 ## How to Run
 
@@ -47,6 +47,6 @@ The code provided has been designed to enable quick development for developers t
 To start there is a package `EventLoader.java` this is the package where you add your custom code. This package gets invoked once the application has successfully connected to the queue and waiting for messages.
 
 The application expects the topic subscription to be in the following format
-[domain] / [resource] / [event]
+`[domain] / [resource] / [event]`
 
 It looks for the event name and perfoms a check. This allows the client application to support multiple event types.
