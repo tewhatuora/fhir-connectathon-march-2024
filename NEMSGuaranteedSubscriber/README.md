@@ -69,9 +69,7 @@ The Utilities folder contains a number of helper packages. These will be extende
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic cXVlc3Rpb25uYWlyZTpmamc2RU1SLnRtay5ybWE1ZnJm' \
 --header 'Cookie: TSID=609e013db6d8eb00' \
---data '{
-    "test": "manual"
-}'`
+--data '{"fullUrl":"https://fhir.api-dev.digital.health.nz/R4/QuestionnaireResponse/37b2b852-4e4f-435b-a72c-172d08897ef0"}'`
 
 #### Questionnaire Creds
 
