@@ -75,13 +75,13 @@ This is a Sample Event for Questionnair Response
 
 This is a sample event for Service Requst. This is just a smaple in waiting for a real event.
 
-curl --location 'https://ring-of-fhir.messaging.solace.cloud:9443/fhir/ServiceRequest/ABC123/ZAA1234' \
+`curl --location 'https://ring-of-fhir.messaging.solace.cloud:9443/fhir/ServiceRequest/ABC123/ZAA1234' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Basic cXVlc3Rpb25uYWlyZTpmamc2RU1SLnRtay5ybWE1ZnJm' \
 --header 'Cookie: TSID=04c5b65e66da68b4' \
 --data '{
 "fullUrl": "https://fhir.api-dev.digital.health.nz/R4/ServiceRequest/AAAAAAA-124353677-BBBBBB-548368548"
-}'
+}'`
 
 #### Questionnaire Creds
 
