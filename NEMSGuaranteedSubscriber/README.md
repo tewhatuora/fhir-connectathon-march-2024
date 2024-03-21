@@ -63,7 +63,9 @@ The Utilities folder contains a number of helper packages. These will be extende
 - NhiUtil: Gets data from the NHI FHIR API in a digestable format. Currently on Death data is supported
 - RestUtil: REST helper package that helps call REST APIs and parse them
 
-### Curl to POT sample Event
+### Curl to POST sample Event
+
+This is a Sample Event for Questionnair Response
 
 `curl --location 'https://ring-of-fhir.messaging.solace.cloud:9443/fhir/QuestionnaireResponse/SmokingCessation' \
 --header 'Content-Type: application/json' \
@@ -71,9 +73,19 @@ The Utilities folder contains a number of helper packages. These will be extende
 --header 'Cookie: TSID=609e013db6d8eb00' \
 --data '{"fullUrl":"https://fhir.api-dev.digital.health.nz/R4/QuestionnaireResponse/37b2b852-4e4f-435b-a72c-172d08897ef0"}'`
 
+This is a sample event for Service Requst. This is just a smaple in waiting for a real event.
+
+curl --location 'https://ring-of-fhir.messaging.solace.cloud:9443/fhir/ServiceRequest/ABC123/ZAA1234' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Basic cXVlc3Rpb25uYWlyZTpmamc2RU1SLnRtay5ybWE1ZnJm' \
+--header 'Cookie: TSID=04c5b65e66da68b4' \
+--data '{
+"fullUrl": "https://fhir.api-dev.digital.health.nz/R4/ServiceRequest/AAAAAAA-124353677-BBBBBB-548368548"
+}'
+
 #### Questionnaire Creds
 
-This POSt is to get a token for the FHIR request
+This POST is to get a token for the FHIR request
 
 `curl --location 'https://auth.integration-dev.covid19.health.nz/oauth2/token' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
