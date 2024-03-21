@@ -72,3 +72,11 @@ The Utilities folder contains a number of helper packages. These will be extende
 --data '{
     "test": "manual"
 }'`
+
+#### Questionnaire Creds
+
+    Server:         https://auth.integration-dev.covid19.health.nz/oauth2/token
+    ClientID:       2fg45n3sstl3rlsab7cj5mobg4
+    ClientSecret:   12th7ln71us71prgv05ucj8jvqqhrctoq5qbk1l8m0qfciknfu1s
+    Scope:          scope/cinc
+    Grant Type:     client_credentials
