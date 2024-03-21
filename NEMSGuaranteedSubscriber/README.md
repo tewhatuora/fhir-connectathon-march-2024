@@ -63,7 +63,7 @@ The Utilities folder contains a number of helper packages. These will be extende
 - NhiUtil: Gets data from the NHI FHIR API in a digestable format. Currently on Death data is supported
 - RestUtil: REST helper package that helps call REST APIs and parse them
 
-### Curl to POST
+### Curl to POT sample Event
 
 `curl --location 'https://ring-of-fhir.messaging.solace.cloud:9443/fhir/QuestionnaireResponse/SmokingCessation' \
 --header 'Content-Type: application/json' \
@@ -73,8 +73,27 @@ The Utilities folder contains a number of helper packages. These will be extende
 
 #### Questionnaire Creds
 
+This POSt is to get a token for the FHIR request
+
+`curl --location 'https://auth.integration-dev.covid19.health.nz/oauth2/token' \
+
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'grant_type=client_credentials' \
+--data-urlencode 'client_id=m6gk6vhqn9gqigm2rb1k7enkr' \
+--data-urlencode 'client_secret=1a82vtuuoqf6huu2p7subh0l4h3gbi532ni2ajj6onqmdkuv0150' \
+--data-urlencode 'scope=scope/cinc'`
+
+The credentials for easy reading
+
     Server:         https://auth.integration-dev.covid19.health.nz/oauth2/token
-    ClientID:       2fg45n3sstl3rlsab7cj5mobg4
-    ClientSecret:   12th7ln71us71prgv05ucj8jvqqhrctoq5qbk1l8m0qfciknfu1s
+    ClientID:       m6gk6vhqn9gqigm2rb1k7enkr
+    ClientSecret:   a82vtuuoqf6huu2p7subh0l4h3gbi532ni2ajj6onqmdkuv0150
     Scope:          scope/cinc
     Grant Type:     client_credentials
+
+The request above will provide the token to be used in the request below
+
+`curl --location 'https://fhir.api-dev.digital.health.nz/R4/QuestionnaireResponse/37b2b852-4e4f-435b-a72c-172d08897ef0' \
+--header 'x-api-key: ArkmfdzwVhuugBboZdog98AGlQwxX2z9cG3D1Oz4' \
+--header 'Authorization: Bearer [TOKEN]' \
+--header 'Request-Context : ewogICJ1c2VySWRlbnRpZmllciI6ICIxMUFBYmJAIyIsCiAgInVzZXJSb2xlIjogIlByYWN0aXRpb25lciIsCiAgInNlY29uZGFyeUlkZW50aWZpZXJzIjogewogICAgInVzZSI6ICJvZmZpY2lhbCIsCiAgICAic3lzdGVtIjogImh0dHBzOi8vc3RhbmRhcmRzLmRpZ2l0YWwuaGVhbHRoLm56L25zL2hwaS1wZXJzb24taWQiLAogICAgInZhbHVlIjogIjk5WlpGWCIKICB9Cn0='`
