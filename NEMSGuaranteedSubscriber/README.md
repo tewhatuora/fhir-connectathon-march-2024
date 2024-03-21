@@ -76,7 +76,6 @@ The Utilities folder contains a number of helper packages. These will be extende
 This POSt is to get a token for the FHIR request
 
 `curl --location 'https://auth.integration-dev.covid19.health.nz/oauth2/token' \
-
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'grant_type=client_credentials' \
 --data-urlencode 'client_id=m6gk6vhqn9gqigm2rb1k7enkr' \
@@ -87,7 +86,7 @@ The credentials for easy reading
 
     Server:         https://auth.integration-dev.covid19.health.nz/oauth2/token
     ClientID:       m6gk6vhqn9gqigm2rb1k7enkr
-    ClientSecret:   a82vtuuoqf6huu2p7subh0l4h3gbi532ni2ajj6onqmdkuv0150
+    ClientSecret:   1a82vtuuoqf6huu2p7subh0l4h3gbi532ni2ajj6onqmdkuv0150
     Scope:          scope/cinc
     Grant Type:     client_credentials
 
