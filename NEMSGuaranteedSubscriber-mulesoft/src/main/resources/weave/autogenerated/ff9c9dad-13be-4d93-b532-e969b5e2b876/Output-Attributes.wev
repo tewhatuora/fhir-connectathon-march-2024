@@ -1,0 +1,40 @@
+%dw 2.0
+
+type auto_ff9c9dad_13be_4d93_b532_e969b5e2b876_Output_Attributes = {|
+  DMQEligible?: Boolean {"typeId": "boolean"}, 
+  applicationMessageId?: String, 
+  applicationMessageType?: String, 
+  contentType?: String, 
+  correlationId?: String, 
+  cos?: Number, 
+  deliveryMode?: String, 
+  destination?: String, 
+  discardIndication?: Boolean {"typeId": "boolean"}, 
+  elidingEligible?: Boolean {"typeId": "boolean"}, 
+  endpointType?: String, 
+  expiration?: Number, 
+  isDMQEligible?: Boolean {"typeId": "boolean"}, 
+  isElidingEligible?: Boolean {"typeId": "boolean"}, 
+  isRedelivered?: Boolean {"typeId": "boolean"}, 
+  isReply?: Boolean {"typeId": "boolean"}, 
+  messageReferenceId?: String, 
+  priority?: Number, 
+  receiveTimestamp?: Number, 
+  redelivered?: Boolean {"typeId": "boolean"}, 
+  reply?: Boolean {"typeId": "boolean"}, 
+  replyTo?: String, 
+  replyToEndpointType?: String, 
+  senderID?: String, 
+  senderTimestamp?: Number, 
+  sequenceNumber?: Number, 
+  timeToLive?: Number, 
+  userData?: Binary, 
+  userProperties?: { _?: java_io_Serializable }
+|} {"typeAlias": "SolaceMessageProperties",
+"class": "com.solace.connector.mulesoft.api.param.SolaceMessageProperties",
+"typeId": "com.solace.connector.mulesoft.api.param.SolaceMessageProperties"}
+type java_io_Serializable = {|  |} {"typeAlias": "Serializable",
+"typeId": "java.io.Serializable"}
+
+
+
