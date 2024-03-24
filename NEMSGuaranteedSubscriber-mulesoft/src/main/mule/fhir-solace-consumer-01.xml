@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" 
+	xmlns:oauth="http://www.mulesoft.org/schema/mule/oauth"
+	xmlns:solace="http://www.mulesoft.org/schema/mule/solace" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/solace http://www.mulesoft.org/schema/mule/solace/current/mule-solace.xsd
+http://www.mulesoft.org/schema/mule/oauth http://www.mulesoft.org/schema/mule/oauth/current/mule-oauth.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6b8f8e19-ec20-421c-8fcb-6dd2a9f5ee64" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<solace:config name="Solace_PubSub__Connector_Config" doc:name="Solace PubSub+ Connector Config" doc:id="383e9cd7-3841-4fe1-8ce0-df9785757bcb" >
+		<solace:connection clientUserName="${solace.clientUsername}" password="${solace.clientPassword}" brokerHost="${solace.brokerHost}" msgVPN="${solace.messageVpn}"/>
+	</solace:config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="1d648971-0089-4cd3-ba25-1e7ef11f17f6">
+		<http:request-connection protocol="HTTPS">
+			<http:authentication >
+				<oauth:client-credentials-grant-type clientId="${auth.clientId}" clientSecret="${auth.clientSecret}" tokenUrl="${auth.server}" scopes="${auth.scope}"/>
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="b680350e-8a46-48bd-aaba-01139627ea19" file="properties-dev.yaml" />
+	<flow name="api-healthcheck" doc:id="a24d5a18-7634-4cee-b8a9-cb2e01c11281" >
+		<http:listener doc:name="Listener" doc:id="a9220afc-4e23-4da8-8d63-74d41261d6e9" config-ref="HTTP_Listener_config" path="/healthcheck"/>
+		<set-payload value="Healthcheck: OK" doc:name="Set Payload" doc:id="c2f630bb-bac2-488c-9d30-1df77fa67d0a" />
+	</flow>
+	<flow name="fhir-solace-consumer" doc:id="b68b2039-5e88-48bf-a087-ddc5c3628e20" >
+		<solace:queue-listener doc:name="Guaranteed Endpoint Listener" doc:id="53d6b62a-32cc-463f-9882-74eae8776c2d" address="henderson" config-ref="Solace_PubSub__Connector_Config"/>
+		<logger level="WARN" doc:name="Logger" doc:id="e12ad007-0a6b-4b1c-a6c2-4ac7ec5e8884" message="#[payload]"/>
+		<set-variable value="#[payload]" doc:name="solacePayload" doc:id="2c93ecb6-7828-486f-a892-d4824b9fed53" variableName="solacePayload"/>
+		<flow-ref doc:name="fhir-get-resource" doc:id="246744ae-8f5f-4655-8534-cb846da6b9a1" name="fhir-get-resource"/>
+		<flow-ref doc:name="fhir-get-resource-extracts" doc:id="8f59414e-08a4-410b-92d4-817c4042792f" name="fhir-get-resource-extracts" />
+	</flow>
+	<!-- [STUDIO:"fhir-get-resource-via-connector"]<flow name="fhir-get-resource-via-connector" doc:id="f43634fa-8399-4597-a8a1-1d37d23733d3" >
+		<ee:transform doc:name="Transform Message" doc:id="234ad7b2-42be-4ee3-bf19-97f091fbd963" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/json
+&#45;&#45;-
+{
+    objId: substringAfterLast(payload.fullUrl, "/")
+}&#93;&#93;></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="objId" ><![CDATA[%dw 2.0
+output application/java
+&#45;&#45;-
+{
+}&#93;&#93;></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<fhirr4questionnaire-response-api:get-questionnaire-response-by-id doc:name="Get questionnaire response by id" doc:id="2fb90ee8-3f3e-4ab5-959d-3e2315b899b7" config-ref="FHIR_R4_QuestionnaireResponse_API_Config" id="#[vars.objId&#93;"/>
+		<logger level="INFO" doc:name="Logger" doc:id="9bb2263b-a0cd-4b5f-8c1b-95027d710f84" message="#[payload&#93;"/>
+	</flow> [STUDIO] -->
+	<sub-flow name="fhir-get-resource" doc:id="ff9c9dad-13be-4d93-b532-e969b5e2b876">
+		<http:request method="GET" doc:name="Request" doc:id="cec0f6cc-ed0f-40ab-9d1c-9c4177d4a5ce" config-ref="HTTP_Request_configuration" url="#[vars.solacePayload.fullUrl]">
+			<http:headers><![CDATA[#[output application/java
+---
+{
+	"x-api-key" : "${fhir.xApiKey}",
+	"Request-Context" : "${fhir.requestContext}"
+}]]]></http:headers>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="0999c8db-2f68-4a7b-bb0d-f341c6587cda" message="getting fhir resource" />
+	</sub-flow>
+	<sub-flow name="fhir-get-resource-extracts" doc:id="0606d9d9-3e3c-4333-8900-879709474b6e" >
+		<ee:transform doc:name="Create extractUrl" doc:id="0a91fa00-c22d-45df-9d79-bea8349cbdcb" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="extractUrl" ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/java
+---
+(substringBeforeLast(vars.solacePayload.fullUrl, "/") default "") ++ "/\$extract"
+]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="33fc8ddd-cebb-4f13-8c16-e658839af82a" config-ref="HTTP_Request_configuration" url='#[vars.extractUrl]'>
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"x-api-key" : "${fhir.xApiKey}",
+	"Request-Context" : "${fhir.requestContext}"
+}]]]></http:headers>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="d9fe68e9-94e5-4f7f-b04c-e120d754bfbb" message="getting fhir resource" />
+	</sub-flow>
+</mule>

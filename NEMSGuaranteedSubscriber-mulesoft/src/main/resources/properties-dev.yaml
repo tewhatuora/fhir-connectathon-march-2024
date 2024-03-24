@@ -1,0 +1,16 @@
+auth:
+  server: "https://auth.integration-dev.covid19.health.nz/oauth2/token"
+  clientId: "****"
+  clientSecret: "****"
+  scope: "scope/cinc"
+  grantType: "client_credentials"
+  
+solace:
+  clientUsername: "****"
+  clientPassword: "****"
+  messageVpn: "ring-of-fhir"
+  brokerHost: "tcps://ring-of-fhir.messaging.solace.cloud:55443" 
+
+fhir:
+  xApiKey: "****" 
+  requestContext: "****"
